@@ -1,36 +1,47 @@
 #include "main.h"
 #include "config.hpp"
+#include "user_config.hpp"
 
+// Main controller
+pros::Controller controller_main(CONTROLLER_MASTER);
 
-// Controller
-pros::Controller main_controller(CONTROLLER_MASTER);
+// Automaticaly set all drivetrain motors to cartridge
+constexpr pros::v5::MotorGears DRIVETRAIN_CARTRIDGE_COLOUR() {
+    if (DRIVETRAIN_CARTRIDGE_RPM == 100) {
+        return pros::v5::MotorGears::red;
+    }
+    if (DRIVETRAIN_CARTRIDGE_RPM == 600) {
+        return pros::v5::MotorGears::blue;
+    }
+    return pros::v5::MotorGears::green;
+}
 
 // Drivetrain motors
-pros::Motor drivetrain_fl(1);
-pros::Motor drivetrain_fr(2);
-pros::Motor drivetrain_bl(3);
-pros::Motor drivetrain_br(4);
+pros::Motor drivetrain_fl(DRIVETRAIN_FL, DRIVETRAIN_CARTRIDGE_COLOUR());
+pros::Motor drivetrain_fr(DRIVETRAIN_FR, DRIVETRAIN_CARTRIDGE_COLOUR());
+pros::Motor drivetrain_bl(DRIVETRAIN_BL, DRIVETRAIN_CARTRIDGE_COLOUR());
+pros::Motor drivetrain_br(DRIVETRAIN_BR, DRIVETRAIN_CARTRIDGE_COLOUR());
 
 // Lift motors
-pros::MotorGroup lift({5, 6});
+pros::MotorGroup lift({LIFT_1, LIFT_2});
 
-// Claw Pneumatics
-pros::ADIAnalogOut claw('A');
-pros::ADIAnalogOut claw_rotate('B');
+// Claw pneumatics
+pros::adi::DigitalOut claw(CLAW);
+pros::adi::DigitalOut claw_rotate(CLAW_ROTATE);
 
 // Distance sensors
-pros::Distance distance_left(7);
-pros::Distance distance_back(8);
+pros::Distance distance_left(DISTANCE_LEFT);
+pros::Distance distance_back(DISTANCE_BACK);
 
 // Inertal sensor
-pros::Imu Inertial(9);
+pros::Imu inertial(INERTIAL);
 
 // Rotation sensors for odometry
-pros::Rotation tracking_wheel_horizontal(10);
-pros::Rotation tracking_wheel_vertical(11);
+pros::Rotation tracking_wheel_horizontal(TRACKING_WHEEL_HORIZONTAL);
+pros::Rotation tracking_wheel_vertical(TRACKING_WHEEL_VERTICAL);
 
 // Optical sensor for toggles
-pros::Optical optical_toggle(12);
+pros::Optical optical_toggle(OPTICAL_TOGGLE);
 
 // GPS sensor for odometry setup
-pros::GPS gps(13, 0, 0); //TODO: set offset
+pros::GPS gps(GPS_PORT, GPS_X_OFFSET, GPS_Y_OFFSET); //TODO: Set offset

@@ -1,4 +1,7 @@
 #include "main.h"
+#include "config.hpp"
+#include "user_config.hpp"
+#include "drivetrain.hpp"
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -9,6 +12,17 @@
 void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(0, "Starting initialisation...");
+
+	drivetrain_fl.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	drivetrain_fr.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	drivetrain_bl.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	drivetrain_br.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	drivetrain_fl.set_encoder_units(MOTOR_ENCODER_DEGREES);
+	drivetrain_fr.set_encoder_units(MOTOR_ENCODER_DEGREES);
+	drivetrain_bl.set_encoder_units(MOTOR_ENCODER_DEGREES);
+	drivetrain_br.set_encoder_units(MOTOR_ENCODER_DEGREES);
+
+	inertial.reset();
 }
 
 /**
@@ -55,4 +69,18 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {}
+void opcontrol() {
+	pros::lcd::set_text(0, "Starting driver control...");
+
+	constexpr double CONTROLLER_MAIN_AXIS_SCALE = DRIVETRAIN_CARTRIDGE_RPM / 127.0; // 127 is the range of the joysticks analog outputs
+
+	while (true) {
+		double controller_main_axis1_x = controller_main.get_analog(ANALOG_LEFT_X) * CONTROLLER_MAIN_AXIS_SCALE;
+		double controller_main_axis1_y = controller_main.get_analog(ANALOG_LEFT_Y) * CONTROLLER_MAIN_AXIS_SCALE;
+		double controller_main_axis2_x = controller_main.get_analog(ANALOG_RIGHT_X) * CONTROLLER_MAIN_AXIS_SCALE;
+
+		drivetrain_move(controller_main_axis1_x, controller_main_axis1_y, controller_main_axis2_x);
+	
+		pros::delay(20);
+	}
+}

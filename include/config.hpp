@@ -2,8 +2,8 @@
 
 #include "main.h"
 
-// Controller
-pros::Controller main_controller;
+// Main controller
+extern pros::Controller controller_main;
 
 // Drivetrain motors
 extern pros::Motor drivetrain_fl;
@@ -15,15 +15,15 @@ extern pros::Motor drivetrain_br;
 extern pros::MotorGroup lift;
 
 // Claw Pneumatics
-extern pros::ADIAnalogOut claw;
-extern pros::ADIAnalogOut claw_rotate;
+extern pros::adi::DigitalOut claw;
+extern pros::adi::DigitalOut claw_rotate;
 
-// Distance sensors
+// Distance sensors for odometry setup
 extern pros::Distance distance_left;
 extern pros::Distance distance_back;
 
 // Inertal sensor
-extern pros::Imu Inertial;
+extern pros::Imu inertial;
 
 // Rotation sensors for odometry
 extern pros::Rotation tracking_wheel_horizontal;
