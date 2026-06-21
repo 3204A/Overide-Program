@@ -3,6 +3,10 @@
 #include "user_config.hpp"
 #include "drivetrain.hpp"
 
+#ifdef DEBUG_ENABLED
+#include "debug.hpp"
+#endif
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -21,6 +25,9 @@ void initialize() {
 	drivetrain_fr.set_encoder_units(MOTOR_ENCODER_DEGREES);
 	drivetrain_bl.set_encoder_units(MOTOR_ENCODER_DEGREES);
 	drivetrain_br.set_encoder_units(MOTOR_ENCODER_DEGREES);
+
+	lift.set_brake_mode_all(MOTOR_BRAKE_HOLD);
+	lift.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
 
 	inertial.reset();
 }
@@ -72,15 +79,23 @@ void autonomous() {}
 void opcontrol() {
 	pros::lcd::set_text(0, "Starting driver control...");
 
+	// Calculates the scale factor to scale controller input to RPM
 	constexpr double CONTROLLER_MAIN_AXIS_SCALE = DRIVETRAIN_CARTRIDGE_RPM / 127.0; // 127 is the range of the joysticks analog outputs
 
 	while (true) {
-		double controller_main_axis1_x = controller_main.get_analog(ANALOG_LEFT_X) * CONTROLLER_MAIN_AXIS_SCALE;
-		double controller_main_axis1_y = controller_main.get_analog(ANALOG_LEFT_Y) * CONTROLLER_MAIN_AXIS_SCALE;
-		double controller_main_axis2_x = controller_main.get_analog(ANALOG_RIGHT_X) * CONTROLLER_MAIN_AXIS_SCALE;
+		
+		// Scales controller input to drivetrain RPM
+		double velocity_x = controller_main.get_analog(ANALOG_LEFT_X) * CONTROLLER_MAIN_AXIS_SCALE;
+		double velocity_y = controller_main.get_analog(ANALOG_LEFT_Y) * CONTROLLER_MAIN_AXIS_SCALE;
+		double velocity_turn = controller_main.get_analog(ANALOG_RIGHT_X) * CONTROLLER_MAIN_AXIS_SCALE;
 
-		drivetrain_move(controller_main_axis1_x, controller_main_axis1_y, controller_main_axis2_x);
+		drivetrain_move(velocity_x, velocity_y, velocity_turn);
 	
+		#ifdef DEBUG_ENABLED
+		controller_debug = {velocity_x, velocity_y, velocity_turn};
+		debug_display();
+		#endif
+
 		pros::delay(20);
 	}
 }
