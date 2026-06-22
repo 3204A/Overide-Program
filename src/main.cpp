@@ -91,15 +91,32 @@ void opcontrol() {
 	// Calculates the scale factor to scale controller input to RPM
 	constexpr double CONTROLLER_MAIN_AXIS_SCALE = DRIVETRAIN_CARTRIDGE_RPM / 127.0; // 127 is the range of the joysticks analog outputs
 
+	bool field_centered = false;
+
 	while (true) {
-		
 		// Scales controller input to drivetrain RPM
 		double velocity_x = controller_main.get_analog(ANALOG_LEFT_X) * CONTROLLER_MAIN_AXIS_SCALE;
 		double velocity_y = controller_main.get_analog(ANALOG_LEFT_Y) * CONTROLLER_MAIN_AXIS_SCALE;
 		double velocity_turn = controller_main.get_analog(ANALOG_RIGHT_X) * CONTROLLER_MAIN_AXIS_SCALE;
 
-		drivetrain_move(velocity_x, velocity_y, velocity_turn);
-	
+		if (controller_main.get_digital_new_press(DIGITAL_Y)) {
+			if (field_centered) {
+				field_centered = false;
+				pros::lcd::set_text(1, "Robot centered");
+			}
+			else {
+				field_centered = true;
+				pros::lcd::set_text(1, "field centered");
+			}
+		}
+
+		if (field_centered) {
+			drivetrain_move_feild_centered(velocity_x, velocity_y, velocity_turn);
+		}
+		else {
+			drivetrain_move(velocity_x, velocity_y, velocity_turn);
+		}
+
 		#ifdef DEBUG_ENABLED
 		controller_debug = {velocity_x, velocity_y, velocity_turn};
 		#endif

@@ -44,7 +44,8 @@ constexpr double GPS_X_OFFSET = 0;
 constexpr double GPS_Y_OFFSET = 0;
 
 // Smoothing values
-constexpr double SMOOTHING_VALUE_DISTANCE = 0.9;
-constexpr double SMOOTHING_VALUE_INERTIAL = 0.9;
+// TODO: replace placeholder values
+constexpr double SMOOTHING_VALUE_DISTANCE = 0.5;
+constexpr double SMOOTHING_VALUE_INERTIAL = 0.3;
 constexpr double SMOOTHING_VALUE_TRACKING_WHEEL = 0.9;
-constexpr double SMOOTHING_VALUE_GPS = 0.9;
+constexpr double SMOOTHING_VALUE_GPS = 0.2;

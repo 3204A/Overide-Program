@@ -3,7 +3,10 @@
 #include "config.hpp"
 #include "user_config.hpp"
 
+// Smooths sensor readings using a exponential moving average (EMA)
+// Smoothed reading = (current reading * smoothing value) + (previous smoothed reading * (1 - smoothing value))
 void sensor_smooth() {
+    // Reverses smoothing value for the (1 - smoothing value) part of formular to reduce required math during runtime
     constexpr double SMOOTHING_VALUE_DISTANCE_REVERSED = 1 - SMOOTHING_VALUE_DISTANCE;
     constexpr double SMOOTHING_VALUE_INERTIAL_REVERSED = 1 - SMOOTHING_VALUE_INERTIAL;
     constexpr double SMOOTHING_VALUE_TRACKING_WHEEL_REVERSED = 1 - SMOOTHING_VALUE_TRACKING_WHEEL;
@@ -18,7 +21,7 @@ void sensor_smooth() {
     double current_gps_y = gps.get_position_y();
     double current_gps_heading = gps.get_heading();
     
-    // Exponential moving average formula
+    // EMA implementation
     processed_distance.back_mm = (current_distance_back * SMOOTHING_VALUE_DISTANCE) + (processed_distance.back_mm * SMOOTHING_VALUE_DISTANCE_REVERSED);
     processed_distance.left_mm = (current_distance_left * SMOOTHING_VALUE_DISTANCE) + (processed_distance.left_mm * SMOOTHING_VALUE_DISTANCE_REVERSED);
     processed_inertial.rotation_degree = (current_inertial_rotation * SMOOTHING_VALUE_INERTIAL) + (processed_inertial.rotation_degree * SMOOTHING_VALUE_INERTIAL_REVERSED);
