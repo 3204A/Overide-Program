@@ -3,6 +3,11 @@
 #include "config.hpp"
 #include "user_config.hpp"
 
+distance_processed processed_distance;
+inertial_processed processed_inertial;
+tracking_wheel_processed processed_tracking_wheel;
+gps_processed processed_gps;
+
 // Smooths sensor readings using a exponential moving average (EMA)
 // Smoothed reading = (current reading * smoothing value) + (previous smoothed reading * (1 - smoothing value))
 void sensor_smooth() {
