@@ -26,4 +26,14 @@ extern inertial_processed processed_inertial;
 extern tracking_wheel_processed processed_tracking_wheel;
 extern gps_processed processed_gps;
 
+enum class fieldSide {
+    red_close,
+    red_far,
+    blue_close,
+    blue_far,
+    unknown
+};
+
+fieldSide field_quadrant(double x, double y);
+
 void sensor_variable_update();

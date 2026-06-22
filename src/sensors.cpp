@@ -8,9 +8,10 @@ inertial_processed processed_inertial;
 tracking_wheel_processed processed_tracking_wheel;
 gps_processed processed_gps;
 
-// Smooths sensor readings using a exponential moving average (EMA)
-// Smoothed reading = (current reading * smoothing value) + (previous smoothed reading * (1 - smoothing value))
-void sensor_smooth() {
+void sensor_processing() {
+    // Smooths sensor readings using a exponential moving average (EMA)
+    // Smoothed reading = (current reading * smoothing value) + (previous smoothed reading * (1 - smoothing value))
+    
     // Reverses smoothing value for the (1 - smoothing value) part of formular to reduce required math during runtime
     constexpr double SMOOTHING_VALUE_DISTANCE_REVERSED = 1 - SMOOTHING_VALUE_DISTANCE;
     constexpr double SMOOTHING_VALUE_INERTIAL_REVERSED = 1 - SMOOTHING_VALUE_INERTIAL;
@@ -19,7 +20,7 @@ void sensor_smooth() {
 
     double current_distance_back = distance_back.get_distance();
     double current_distance_left = distance_left.get_distance();
-    double current_inertial_rotation = inertial.get_rotation();
+    double current_inertial_rotation = inertial.get_rotation() * ERROR_CORECTION_INERTIAL; // Cancel out error in inertial readings where 1 full rotation ± 360 degrees
     double current_tracking_wheel_horizontal_rotation = tracking_wheel_horizontal.get_position();
     double current_tracking_wheel_vertical_rotation = tracking_wheel_vertical.get_position();
     double current_gps_x = gps.get_position_x();
@@ -43,10 +44,23 @@ void sensor_smooth() {
     if (processed_inertial.heading_degree < 0) processed_inertial.heading_degree += 360.0;
 }
 
+fieldSide field_quadrant(double x, double y) {
+    // Splits sides of field
+    double diagonal1 = x + y;
+    double diagonal2 = x - y;
+
+    if (diagonal1 > 0 && diagonal2 > 0) return fieldSide::red_close;
+    if (diagonal1 > 0 && diagonal2 < 0) return fieldSide::red_far;
+    if (diagonal1 < 0 && diagonal2 > 0) return fieldSide::blue_close;
+    if (diagonal1 < 0 && diagonal2 < 0) return fieldSide::blue_far;
+
+    return fieldSide::unknown;
+}
+
 void sensor_variable_update() {
     while (true)
     {
-        sensor_smooth();
+        sensor_processing();
         pros::delay(20);
     }
 }

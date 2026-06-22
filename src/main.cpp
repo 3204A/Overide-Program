@@ -31,7 +31,7 @@ void initialize() {
 	lift.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
 	lift.tare_position_all();
 
-	inertial.reset();
+	inertial.reset(true);
 
 	// Start background processes
 	#ifdef DEBUG_ENABLED

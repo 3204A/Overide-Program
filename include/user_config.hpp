@@ -49,3 +49,6 @@ constexpr double SMOOTHING_VALUE_DISTANCE = 0.5;
 constexpr double SMOOTHING_VALUE_INERTIAL = 0.3;
 constexpr double SMOOTHING_VALUE_TRACKING_WHEEL = 0.9;
 constexpr double SMOOTHING_VALUE_GPS = 0.2;
+
+// For correcting error of raw inertial readings
+constexpr double ERROR_CORECTION_INERTIAL = 1;
