@@ -2,6 +2,7 @@
 #include "config.hpp"
 #include "user_config.hpp"
 #include "drivetrain.hpp"
+#include "sensors.hpp"
 
 #ifdef DEBUG_ENABLED
 #include "debug.hpp"
@@ -28,8 +29,16 @@ void initialize() {
 
 	lift.set_brake_mode_all(MOTOR_BRAKE_HOLD);
 	lift.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
+	lift.tare_position_all();
 
 	inertial.reset();
+
+	// Start background processes
+	#ifdef DEBUG_ENABLED
+	pros::Task debug_task(debug_display, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "debug_task");
+	#endif
+
+	pros::Task sensor_task(sensor_variable_update, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "sensor_task");
 }
 
 /**
@@ -93,7 +102,6 @@ void opcontrol() {
 	
 		#ifdef DEBUG_ENABLED
 		controller_debug = {velocity_x, velocity_y, velocity_turn};
-		debug_display();
 		#endif
 
 		pros::delay(20);

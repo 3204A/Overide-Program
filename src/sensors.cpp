@@ -1,2 +1,44 @@
 #include "main.h"
 #include "sensors.hpp"
+#include "config.hpp"
+#include "user_config.hpp"
+
+void sensor_smooth() {
+    constexpr double SMOOTHING_VALUE_DISTANCE_REVERSED = 1 - SMOOTHING_VALUE_DISTANCE;
+    constexpr double SMOOTHING_VALUE_INERTIAL_REVERSED = 1 - SMOOTHING_VALUE_INERTIAL;
+    constexpr double SMOOTHING_VALUE_TRACKING_WHEEL_REVERSED = 1 - SMOOTHING_VALUE_TRACKING_WHEEL;
+    constexpr double SMOOTHING_VALUE_GPS_REVERSED = 1 - SMOOTHING_VALUE_GPS;
+
+    double current_distance_back = distance_back.get_distance();
+    double current_distance_left = distance_left.get_distance();
+    double current_inertial_rotation = inertial.get_rotation();
+    double current_tracking_wheel_horizontal_rotation = tracking_wheel_horizontal.get_position();
+    double current_tracking_wheel_vertical_rotation = tracking_wheel_vertical.get_position();
+    double current_gps_x = gps.get_position_x();
+    double current_gps_y = gps.get_position_y();
+    double current_gps_heading = gps.get_heading();
+    
+    // Exponential moving average formula
+    processed_distance.back_mm = (current_distance_back * SMOOTHING_VALUE_DISTANCE) + (processed_distance.back_mm * SMOOTHING_VALUE_DISTANCE_REVERSED);
+    processed_distance.left_mm = (current_distance_left * SMOOTHING_VALUE_DISTANCE) + (processed_distance.left_mm * SMOOTHING_VALUE_DISTANCE_REVERSED);
+    processed_inertial.rotation_degree = (current_inertial_rotation * SMOOTHING_VALUE_INERTIAL) + (processed_inertial.rotation_degree * SMOOTHING_VALUE_INERTIAL_REVERSED);
+    processed_tracking_wheel.horizontal_rotation_centidegree = (current_tracking_wheel_horizontal_rotation * SMOOTHING_VALUE_TRACKING_WHEEL) + (processed_tracking_wheel.horizontal_rotation_centidegree * SMOOTHING_VALUE_TRACKING_WHEEL_REVERSED);
+    processed_tracking_wheel.vertical_rotation_centidegree = (current_tracking_wheel_vertical_rotation * SMOOTHING_VALUE_TRACKING_WHEEL) + (processed_tracking_wheel.vertical_rotation_centidegree * SMOOTHING_VALUE_TRACKING_WHEEL_REVERSED);
+    processed_gps.x_m = (current_gps_x * SMOOTHING_VALUE_GPS) + (processed_gps.x_m * SMOOTHING_VALUE_GPS_REVERSED);
+    processed_gps.y_m = (current_gps_y * SMOOTHING_VALUE_GPS) + (processed_gps.y_m * SMOOTHING_VALUE_GPS_REVERSED);
+    processed_gps.heading_degree = (current_gps_heading * SMOOTHING_VALUE_GPS) + (processed_gps.heading_degree * SMOOTHING_VALUE_GPS_REVERSED);
+
+    // Calculates inertial heading from inertial rotation
+    // Does not directly use inertial.get_heading() as smoothing would not work with the value wraping
+    // Same not done with gps as no equivelent .get_heading
+    processed_inertial.heading_degree = std::fmod(processed_inertial.rotation_degree, 360.0);
+    if (processed_inertial.heading_degree < 0) processed_inertial.heading_degree += 360.0;
+}
+
+void sensor_variable_update() {
+    while (true)
+    {
+        sensor_smooth();
+        pros::delay(20);
+    }
+}

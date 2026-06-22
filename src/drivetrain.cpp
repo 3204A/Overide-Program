@@ -9,10 +9,10 @@
 
 void drivetrain_move(double velocity_x, double velocity_y, double velocity_turn) {
     // calculate drivetrain motor velocity
-    double fl = velocity_x + velocity_y + velocity_turn;
-    double fr = velocity_x - velocity_y + velocity_turn;
-    double bl = -velocity_x + velocity_y + velocity_turn;
-    double br = -velocity_x - velocity_y + velocity_turn;
+    double fl = -velocity_x - velocity_y - velocity_turn;
+    double fr = -velocity_x + velocity_y - velocity_turn;
+    double bl = velocity_x + velocity_y - velocity_turn;
+    double br = velocity_x - velocity_y - velocity_turn;
     double scale = 1;
     
     // scale to keep velocity under Drivetrain RPM

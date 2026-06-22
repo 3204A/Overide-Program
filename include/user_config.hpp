@@ -11,10 +11,10 @@ constexpr int DRIVETRAIN_CARTRIDGE_RPM = 200;
 
 // Drivetrain motors
 // Assumes all drivetrain motors spin clockwise
-constexpr std::int8_t DRIVETRAIN_FL = -1;
-constexpr std::int8_t DRIVETRAIN_FR = -2;
-constexpr std::int8_t DRIVETRAIN_BL = -3;
-constexpr std::int8_t DRIVETRAIN_BR = -4;
+constexpr std::int8_t DRIVETRAIN_FL = 20;
+constexpr std::int8_t DRIVETRAIN_FR = 11;
+constexpr std::int8_t DRIVETRAIN_BL = 1;
+constexpr std::int8_t DRIVETRAIN_BR = 10;
 
 // Lift motors
 constexpr std::int8_t LIFT_1 = 5;
@@ -32,8 +32,8 @@ constexpr std::uint8_t DISTANCE_BACK = 8;
 constexpr std::uint8_t INERTIAL = 9;
 
 // Rotation sensors for odometry
-constexpr std::uint8_t TRACKING_WHEEL_HORIZONTAL = 10;
-constexpr std::uint8_t TRACKING_WHEEL_VERTICAL = 11;
+constexpr std::uint8_t TRACKING_WHEEL_HORIZONTAL = 15;
+constexpr std::uint8_t TRACKING_WHEEL_VERTICAL = 14;
 
 // Optical sensor for toggles
 constexpr std::uint8_t OPTICAL_TOGGLE = 12;
@@ -42,3 +42,9 @@ constexpr std::uint8_t OPTICAL_TOGGLE = 12;
 constexpr std::uint8_t GPS_PORT = 13;
 constexpr double GPS_X_OFFSET = 0;
 constexpr double GPS_Y_OFFSET = 0;
+
+// Smoothing values
+constexpr double SMOOTHING_VALUE_DISTANCE = 0.9;
+constexpr double SMOOTHING_VALUE_INERTIAL = 0.9;
+constexpr double SMOOTHING_VALUE_TRACKING_WHEEL = 0.9;
+constexpr double SMOOTHING_VALUE_GPS = 0.9;

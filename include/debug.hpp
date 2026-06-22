@@ -3,7 +3,6 @@
 #include "user_config.hpp"
 
 #ifdef DEBUG_ENABLED
-
 struct debug_drivetrain {
     double fl, fr, bl, br;
     double peak;
