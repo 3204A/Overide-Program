@@ -16,6 +16,8 @@ struct debug_controller {
 extern debug_drivetrain drivetrain_debug;
 extern debug_controller controller_debug;
 
+void debug_tools();
+
 void debug_display();
 
 #endif

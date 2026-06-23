@@ -35,7 +35,14 @@ void initialize() {
 
 	// Start background processes
 	#ifdef DEBUG_ENABLED
-	pros::Task debug_task(debug_display, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "debug_task");
+	// At start if B held down enter debug mode
+	pros::delay(500);
+	if (controller_main.get_digital(DIGITAL_B)) {
+		debug_tools();
+	}
+	
+	// Start background processes
+	pros::Task debug_task(debug_display, 7, TASK_STACK_DEPTH_DEFAULT, "debug_task"); // Debug display is set to a lower prioity to not slow down main robot functions
 	#endif
 
 	pros::Task sensor_task(sensor_variable_update, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "sensor_task");

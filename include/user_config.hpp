@@ -57,3 +57,11 @@ constexpr double SMOOTHING_VALUE_GPS = 0.2;
 
 // For correcting error of raw inertial readings
 constexpr double ERROR_CORECTION_INERTIAL = 1;
+
+// Hue of toggle colours
+constexpr double TOGGLE_HUE_RED_MAX = 0;
+constexpr double TOGGLE_HUE_RED_MIN = 0;
+constexpr double TOGGLE_HUE_YELLOW_MAX = 0;
+constexpr double TOGGLE_HUE_YELLOW_MIN = 0;
+constexpr double TOGGLE_HUE_BLUE_MAX = 0;
+constexpr double TOGGLE_HUE_BLUE_MIN = 0;

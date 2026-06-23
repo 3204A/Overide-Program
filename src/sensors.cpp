@@ -94,9 +94,9 @@ void starting_position() {
 ownedState toggle_state() {
     double hue = optical_toggle.get_hue();
 
-    if (hue < 30 || hue > 330)      return ownedState::red;
-    if (hue > 50  && hue < 70)      return ownedState::yellow;
-    if (hue > 210 && hue < 270)     return ownedState::blue;
+    if (hue > TOGGLE_HUE_RED_MAX || hue < TOGGLE_HUE_RED_MIN) return ownedState::red;
+    if (hue > TOGGLE_HUE_YELLOW_MIN  && hue < TOGGLE_HUE_YELLOW_MAX)      return ownedState::yellow;
+    if (hue > TOGGLE_HUE_BLUE_MIN && hue < TOGGLE_HUE_BLUE_MAX) return ownedState::blue;
 
     return ownedState::unknown;
 }
