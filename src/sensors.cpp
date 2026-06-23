@@ -8,6 +8,7 @@ inertial_processed processed_inertial;
 tracking_wheel_processed processed_tracking_wheel;
 gps_processed processed_gps;
 robot_position position_robot;
+allianceColour alliance;
 
 void sensor_processing() {
     // Smooths sensor readings using a exponential moving average (EMA)
@@ -69,20 +70,60 @@ void starting_position() {
     switch (side) {
         case fieldSide::red_close:
             position_robot = {-FIELD_SIZE_HALF_M + distance_left_m, -FIELD_SIZE_HALF_M + distance_back_m};
+            alliance = allianceColour::red;
             break;
         case fieldSide::red_far:
             position_robot = {FIELD_SIZE_HALF_M - distance_left_m, -FIELD_SIZE_HALF_M + distance_back_m};
+            alliance = allianceColour::red;
             break;
         case fieldSide::blue_close:
             position_robot = {FIELD_SIZE_HALF_M - distance_left_m, FIELD_SIZE_HALF_M - distance_back_m};
+            alliance = allianceColour::blue;
             break;
         case fieldSide::blue_far:
             position_robot = {-FIELD_SIZE_HALF_M + distance_left_m, FIELD_SIZE_HALF_M - distance_back_m};
+            alliance = allianceColour::blue;
             break;
         default:
             position_robot = {processed_gps.x_m, processed_gps.y_m};
+            alliance = allianceColour::unknown;
             break;
     }
+}
+
+ownedState toggle_state() {
+    double hue = optical_toggle.get_hue();
+
+    if (hue < 30 || hue > 330)      return ownedState::red;
+    if (hue > 50  && hue < 70)      return ownedState::yellow;
+    if (hue > 210 && hue < 270)     return ownedState::blue;
+
+    return ownedState::unknown;
+}
+
+spinDirection toggle_spin(double x, double y) {
+    ownedState state = toggle_state();
+    fieldSide side = field_quadrant(x, y);
+
+    if (state == ownedState::unknown) return spinDirection::none;
+
+    if (alliance == allianceColour::red  && state == ownedState::red)  return spinDirection::none;
+    if (alliance == allianceColour::blue && state == ownedState::blue) return spinDirection::none;
+
+    bool red_side = (side == fieldSide::red_close || side == fieldSide::red_far);
+
+    // Red alliance toggles: Red - Blue - Yellow
+    // Blue alliance toggles: Blue - Red - Yellow
+    if (red_side) {
+        if (alliance == allianceColour::red) {
+            if (state == ownedState::yellow) return spinDirection::clockwise;
+            return spinDirection::counter_clockwise;
+        }
+        if (state == ownedState::yellow) return spinDirection::counter_clockwise;
+        return spinDirection::clockwise;
+    }
+    if (alliance == allianceColour::blue) return spinDirection::counter_clockwise;
+    return spinDirection::clockwise;
 }
 
 void sensor_variable_update() {

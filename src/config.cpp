@@ -44,4 +44,4 @@ pros::Rotation tracking_wheel_vertical(TRACKING_WHEEL_VERTICAL);
 pros::Optical optical_toggle(OPTICAL_TOGGLE);
 
 // GPS sensor for odometry setup
-pros::GPS gps(GPS_PORT, GPS_X_OFFSET, GPS_Y_OFFSET); //TODO: Set offset
+pros::GPS gps(GPS_PORT, GPS_X_OFFSET_M, GPS_Y_OFFSET_M); //TODO: Set offset

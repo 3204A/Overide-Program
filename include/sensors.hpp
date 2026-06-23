@@ -40,8 +40,33 @@ enum class fieldSide {
     unknown
 };
 
+enum class allianceColour {
+    red,
+    blue,
+    unknown
+};
+
+enum class ownedState {
+    red,
+    blue,
+    yellow,
+    unknown
+};
+
+enum class spinDirection {
+    clockwise,
+    counter_clockwise,
+    none
+};
+
+extern allianceColour alliance;
+
 fieldSide field_quadrant(double x, double y);
 
 void starting_position();
+
+ownedState toggle_state();
+
+spinDirection toggle_spin(double x, double y);
 
 void sensor_variable_update();
