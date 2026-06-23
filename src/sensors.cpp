@@ -7,6 +7,7 @@ distance_processed processed_distance;
 inertial_processed processed_inertial;
 tracking_wheel_processed processed_tracking_wheel;
 gps_processed processed_gps;
+robot_position position_robot;
 
 void sensor_processing() {
     // Smooths sensor readings using a exponential moving average (EMA)
@@ -46,15 +47,42 @@ void sensor_processing() {
 
 fieldSide field_quadrant(double x, double y) {
     // Splits sides of field
-    double diagonal1 = x + y;
-    double diagonal2 = x - y;
+    double diagonal_1 = x + y;
+    double diagonal_2 = x - y;
 
-    if (diagonal1 > 0 && diagonal2 > 0) return fieldSide::red_close;
-    if (diagonal1 > 0 && diagonal2 < 0) return fieldSide::red_far;
-    if (diagonal1 < 0 && diagonal2 > 0) return fieldSide::blue_close;
-    if (diagonal1 < 0 && diagonal2 < 0) return fieldSide::blue_far;
+    if (diagonal_1 > 0 && diagonal_2 > 0) return fieldSide::red_close;
+    if (diagonal_1 > 0 && diagonal_2 < 0) return fieldSide::red_far;
+    if (diagonal_1 < 0 && diagonal_2 > 0) return fieldSide::blue_close;
+    if (diagonal_1 < 0 && diagonal_2 < 0) return fieldSide::blue_far;
 
     return fieldSide::unknown;
+}
+
+void starting_position() {
+    constexpr double FIELD_SIZE_HALF_M = FIELD_SIZE_M * 0.5;
+
+    fieldSide side = field_quadrant(processed_gps.x_m, processed_gps.y_m);
+
+    double distance_back_m = processed_distance.back_mm * 0.001 + DISTANCE_BACK_OFFSET_M;
+    double distance_left_m = processed_distance.left_mm * 0.001 + DISTANCE_LEFT_OFFSET_M;
+
+    switch (side) {
+        case fieldSide::red_close:
+            position_robot = {-FIELD_SIZE_HALF_M + distance_left_m, -FIELD_SIZE_HALF_M + distance_back_m};
+            break;
+        case fieldSide::red_far:
+            position_robot = {FIELD_SIZE_HALF_M - distance_left_m, -FIELD_SIZE_HALF_M + distance_back_m};
+            break;
+        case fieldSide::blue_close:
+            position_robot = {FIELD_SIZE_HALF_M - distance_left_m, FIELD_SIZE_HALF_M - distance_back_m};
+            break;
+        case fieldSide::blue_far:
+            position_robot = {-FIELD_SIZE_HALF_M + distance_left_m, FIELD_SIZE_HALF_M - distance_back_m};
+            break;
+        default:
+            position_robot = {processed_gps.x_m, processed_gps.y_m};
+            break;
+    }
 }
 
 void sensor_variable_update() {

@@ -27,6 +27,8 @@ constexpr char CLAW_ROTATE = 'B';
 // Distance sensors for odometry setup
 constexpr std::uint8_t DISTANCE_LEFT = 7;
 constexpr std::uint8_t DISTANCE_BACK = 8;
+constexpr double DISTANCE_LEFT_OFFSET_M = 0;
+constexpr double DISTANCE_BACK_OFFSET_M = 0;
 
 // Inertial sensor
 constexpr std::uint8_t INERTIAL = 9;
@@ -40,8 +42,11 @@ constexpr std::uint8_t OPTICAL_TOGGLE = 12;
 
 // GPS sensor for odometry setup
 constexpr std::uint8_t GPS_PORT = 13;
-constexpr double GPS_X_OFFSET = 0;
-constexpr double GPS_Y_OFFSET = 0;
+constexpr double GPS_X_OFFSET_M = 0;
+constexpr double GPS_Y_OFFSET_M = 0;
+
+// Field size
+constexpr double FIELD_SIZE_M = 3.6576;
 
 // Smoothing values
 // TODO: replace placeholder values
