@@ -113,12 +113,12 @@ void opcontrol() {
 			}
 			else {
 				field_centered = true;
-				pros::lcd::set_text(1, "field centered");
+				pros::lcd::set_text(1, "Field centered");
 			}
 		}
 
 		if (field_centered) {
-			drivetrain_move_feild_centered(velocity_x, velocity_y, velocity_turn);
+			drivetrain_move_field_centered(velocity_x, velocity_y, velocity_turn);
 		}
 		else {
 			drivetrain_move(velocity_x, velocity_y, velocity_turn);

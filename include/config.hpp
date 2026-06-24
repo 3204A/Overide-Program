@@ -22,7 +22,7 @@ extern pros::adi::DigitalOut claw_rotate;
 extern pros::Distance distance_left;
 extern pros::Distance distance_back;
 
-// Inertal sensor
+// inertial sensor
 extern pros::Imu inertial;
 
 // Rotation sensors for odometry

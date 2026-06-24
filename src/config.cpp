@@ -33,7 +33,7 @@ pros::adi::DigitalOut claw_rotate(CLAW_ROTATE);
 pros::Distance distance_left(DISTANCE_LEFT);
 pros::Distance distance_back(DISTANCE_BACK);
 
-// Inertal sensor
+// inertial sensor
 pros::Imu inertial(INERTIAL);
 
 // Rotation sensors for odometry
@@ -44,4 +44,4 @@ pros::Rotation tracking_wheel_vertical(TRACKING_WHEEL_VERTICAL);
 pros::Optical optical_toggle(OPTICAL_TOGGLE);
 
 // GPS sensor for odometry setup
-pros::GPS gps(GPS_PORT, GPS_X_OFFSET_M, GPS_Y_OFFSET_M); //TODO: Set offset
+pros::GPS gps(GPS_PORT, GPS_X_OFFSET_M, GPS_Y_OFFSET_M);

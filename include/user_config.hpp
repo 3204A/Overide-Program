@@ -56,7 +56,7 @@ constexpr double SMOOTHING_VALUE_TRACKING_WHEEL = 0.9;
 constexpr double SMOOTHING_VALUE_GPS = 0.2;
 
 // For correcting error of raw inertial readings
-constexpr double ERROR_CORECTION_INERTIAL = 1;
+constexpr double ERROR_CORRECTION_INERTIAL = 1;
 
 // Hue of toggle colours
 constexpr double TOGGLE_HUE_RED_MAX = 0;

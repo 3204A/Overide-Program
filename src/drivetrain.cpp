@@ -39,7 +39,7 @@ void drivetrain_move(double velocity_x, double velocity_y, double velocity_turn)
     drivetrain_br.move_velocity(br);
 }
 
-void drivetrain_move_feild_centered(double velocity_x, double velocity_y, double velocity_turn) {
+void drivetrain_move_field_centered(double velocity_x, double velocity_y, double velocity_turn) {
     constexpr double DEGREES_TO_RADIANS = std::numbers::pi / 180;
     
     double inertial_heading_rad = processed_inertial.heading_degree * DEGREES_TO_RADIANS;

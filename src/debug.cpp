@@ -1,8 +1,10 @@
 #include "main.h"
 #include "debug.hpp"
+
+#ifdef DEBUG_ENABLED
+
 #include "config.hpp"
 #include "sensors.hpp"
-#ifdef DEBUG_ENABLED
 
 debug_drivetrain drivetrain_debug;
 debug_controller controller_debug;
@@ -62,7 +64,7 @@ void debug_tools() {
     auto debug_tools_display = []() {
         pros::lcd::set_text(0, "Setup tools:");
         pros::lcd::set_text(1, "Inertial calibration: Press A");
-        pros::lcd::set_text(2, "Toggle optical calibraction: Press B");
+        pros::lcd::set_text(2, "Toggle optical calibration: Press B");
     };
     debug_tools_display();
 
