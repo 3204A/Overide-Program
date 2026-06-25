@@ -18,6 +18,9 @@ extern pros::MotorGroup lift;
 extern pros::adi::DigitalOut claw;
 extern pros::adi::DigitalOut claw_rotate;
 
+// TEMPORARY TOGGLE WHEEL MOTOR
+extern pros::Motor TempWheel;
+
 // Distance sensors for odometry setup
 extern pros::Distance distance_left;
 extern pros::Distance distance_back;

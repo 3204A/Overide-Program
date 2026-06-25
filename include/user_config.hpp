@@ -1,7 +1,5 @@
 #pragma once
 
-#include "main.h"
-
 // Flag to enable/disable debugging features
 // Comment out to disable
 #define DEBUG_ENABLED

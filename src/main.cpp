@@ -124,6 +124,10 @@ void opcontrol() {
 			drivetrain_move(velocity_x, velocity_y, velocity_turn);
 		}
 
+		if (controller_main.get_digital(DIGITAL_R1)) {
+			TempWheel.move_velocity(200);
+		}
+
 		#ifdef DEBUG_ENABLED
 		controller_debug = {velocity_x, velocity_y, velocity_turn};
 		#endif

@@ -83,7 +83,13 @@ void debug_tools() {
 }
 
 void debug_display() {
+    int last_start = pros::millis();
+    int max_cycle = 0;
+    
     while(true) {
+        int cycle_time = pros::millis() - last_start;
+        if (cycle_time > max_cycle) max_cycle = cycle_time;
+        
         pros::lcd::set_text(3, 
             "Axis input: " +
             std::format("{:.2f}", controller_debug.velocity_x) + " " +
@@ -99,6 +105,13 @@ void debug_display() {
             std::format("{:.0f}", drivetrain_debug.br) + " " +
             std::format("{:.0f}", drivetrain_debug.peak) + " " +
             std::format("{:.2f}", drivetrain_debug.scale)
+        );
+
+        pros::lcd::set_text(4,
+            "Cycle ms: " +
+            std::to_string(cycle_time) +
+            " max: "     +
+            std::to_string(max_cycle)
         );
 
         pros::delay(20); // Screen refresh rate 60hz so don't put under 16.6ms

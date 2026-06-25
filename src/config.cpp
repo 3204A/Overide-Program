@@ -29,6 +29,9 @@ pros::MotorGroup lift({LIFT_1, LIFT_2});
 pros::adi::DigitalOut claw(CLAW);
 pros::adi::DigitalOut claw_rotate(CLAW_ROTATE);
 
+// TEMPORARY TOGGLE WHEEL MOTOR
+pros::Motor TempWheel(5, pros::v5::MotorGears::green);
+
 // Distance sensors
 pros::Distance distance_left(DISTANCE_LEFT);
 pros::Distance distance_back(DISTANCE_BACK);
