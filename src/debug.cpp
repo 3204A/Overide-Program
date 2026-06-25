@@ -38,7 +38,7 @@ void debug_inertial_calibration() {
 void debug_optical_calibration() {
     pros::lcd::set_text(0, "Optical calibration");
     pros::lcd::set_text(4, "Press A when done");
-    while (!controller_main.get_digital_new_press(DIGITAL_B)) {
+    while (!controller_main.get_digital_new_press(DIGITAL_A)) {
         pros::lcd::set_text(1, "Hue: " + std::format("{:.1f}", optical_toggle.get_hue()));
         switch (toggle_state()) {
             case ownedState::red:
@@ -88,6 +88,7 @@ void debug_display() {
     
     while(true) {
         int cycle_time = pros::millis() - last_start;
+        last_start = pros::millis();
         if (cycle_time > max_cycle) max_cycle = cycle_time;
         
         pros::lcd::set_text(3, 

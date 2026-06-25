@@ -10,6 +10,7 @@ extern pros::Motor drivetrain_fl;
 extern pros::Motor drivetrain_fr;
 extern pros::Motor drivetrain_bl;
 extern pros::Motor drivetrain_br;
+extern pros::MotorGroup drivetrain_all;
 
 // Lift motors
 extern pros::MotorGroup lift;

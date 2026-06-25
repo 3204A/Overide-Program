@@ -33,7 +33,6 @@ void initialize() {
 
 	inertial.reset(true);
 
-	// Start background processes
 	#ifdef DEBUG_ENABLED
 	// At start if B held down enter debug mode
 	pros::delay(500);
@@ -77,7 +76,10 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	// Temporary auto code
+	drivetrain_move(50, 0, 0, 300);
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -124,10 +126,15 @@ void opcontrol() {
 			drivetrain_move(velocity_x, velocity_y, velocity_turn);
 		}
 
+		// TEMP: WHEEL TOGGLE
 		if (controller_main.get_digital(DIGITAL_R1)) {
 			TempWheel.move_velocity(200);
 		}
-
+		else {
+			TempWheel.move_velocity(0);
+		}
+		// TEMP: WHEEL TOGGLE
+ 
 		#ifdef DEBUG_ENABLED
 		controller_debug = {velocity_x, velocity_y, velocity_turn};
 		#endif

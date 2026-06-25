@@ -14,7 +14,7 @@ void sensor_processing() {
     // Smooths sensor readings using a exponential moving average (EMA)
     // Smoothed reading = (current reading * smoothing value) + (previous smoothed reading * (1 - smoothing value))
     
-    // Reverses smoothing value for the (1 - smoothing value) part of formular to reduce required math during runtime
+    // Reverses smoothing value for the (1 - smoothing value) part of formula to reduce required math during runtime
     constexpr double SMOOTHING_VALUE_DISTANCE_REVERSED = 1 - SMOOTHING_VALUE_DISTANCE;
     constexpr double SMOOTHING_VALUE_INERTIAL_REVERSED = 1 - SMOOTHING_VALUE_INERTIAL;
     constexpr double SMOOTHING_VALUE_TRACKING_WHEEL_REVERSED = 1 - SMOOTHING_VALUE_TRACKING_WHEEL;
@@ -41,7 +41,7 @@ void sensor_processing() {
 
     // Calculates inertial heading from inertial rotation
     // Does not directly use inertial.get_heading() as smoothing would not work with the value wraping
-    // Same not done with gps as no equivelent .get_heading
+    // Same not done with gps as no equivalent .get_heading
     processed_inertial.heading_degree = std::fmod(processed_inertial.rotation_degree, 360.0);
     if (processed_inertial.heading_degree < 0) processed_inertial.heading_degree += 360.0;
 }
@@ -94,8 +94,8 @@ void starting_position() {
 ownedState toggle_state() {
     double hue = optical_toggle.get_hue();
 
-    if (hue > TOGGLE_HUE_RED_MAX || hue < TOGGLE_HUE_RED_MIN) return ownedState::red;
-    if (hue > TOGGLE_HUE_YELLOW_MIN  && hue < TOGGLE_HUE_YELLOW_MAX)      return ownedState::yellow;
+    if (hue > TOGGLE_HUE_RED_MAX && hue < TOGGLE_HUE_RED_MIN) return ownedState::red;
+    if (hue > TOGGLE_HUE_YELLOW_MIN  && hue < TOGGLE_HUE_YELLOW_MAX) return ownedState::yellow;
     if (hue > TOGGLE_HUE_BLUE_MIN && hue < TOGGLE_HUE_BLUE_MAX) return ownedState::blue;
 
     return ownedState::unknown;
@@ -106,6 +106,7 @@ spinDirection toggle_spin(double x, double y) {
     fieldSide side = field_quadrant(x, y);
 
     if (state == ownedState::unknown) return spinDirection::none;
+    if (side == fieldSide::unknown) return spinDirection::none;
 
     if (alliance == allianceColour::red  && state == ownedState::red)  return spinDirection::none;
     if (alliance == allianceColour::blue && state == ownedState::blue) return spinDirection::none;

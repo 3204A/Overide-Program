@@ -39,6 +39,12 @@ void drivetrain_move(double velocity_x, double velocity_y, double velocity_turn)
     drivetrain_br.move_velocity(br);
 }
 
+void drivetrain_move(double velocity_x, double velocity_y, double velocity_turn, double duration_ms) {
+    drivetrain_move(velocity_x, velocity_y, velocity_turn);
+    pros::delay(duration_ms);
+    drivetrain_all.move_velocity(0);
+}
+
 void drivetrain_move_field_centered(double velocity_x, double velocity_y, double velocity_turn) {
     constexpr double DEGREES_TO_RADIANS = std::numbers::pi / 180;
     
@@ -51,4 +57,10 @@ void drivetrain_move_field_centered(double velocity_x, double velocity_y, double
     double field_centered_velocity_y = (velocity_x * sin_heading) + (velocity_y * cos_heading);
 
     drivetrain_move(field_centered_velocity_x, field_centered_velocity_y, velocity_turn);
+}
+
+void drivetrain_move_field_centered(double velocity_x, double velocity_y, double velocity_turn, double duration_ms) {
+    drivetrain_move(velocity_x, velocity_y, velocity_turn);
+    pros::delay(duration_ms);
+    drivetrain_all.move_velocity(0);
 }

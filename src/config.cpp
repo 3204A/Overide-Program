@@ -21,6 +21,7 @@ pros::Motor drivetrain_fl(DRIVETRAIN_FL, DRIVETRAIN_CARTRIDGE_COLOUR());
 pros::Motor drivetrain_fr(DRIVETRAIN_FR, DRIVETRAIN_CARTRIDGE_COLOUR());
 pros::Motor drivetrain_bl(DRIVETRAIN_BL, DRIVETRAIN_CARTRIDGE_COLOUR());
 pros::Motor drivetrain_br(DRIVETRAIN_BR, DRIVETRAIN_CARTRIDGE_COLOUR());
+pros::MotorGroup drivetrain_all({DRIVETRAIN_FL, DRIVETRAIN_FR, DRIVETRAIN_BL, DRIVETRAIN_BR}, DRIVETRAIN_CARTRIDGE_COLOUR());
 
 // Lift motors
 pros::MotorGroup lift({LIFT_1, LIFT_2});
@@ -30,7 +31,7 @@ pros::adi::DigitalOut claw(CLAW);
 pros::adi::DigitalOut claw_rotate(CLAW_ROTATE);
 
 // TEMPORARY TOGGLE WHEEL MOTOR
-pros::Motor TempWheel(5, pros::v5::MotorGears::green);
+pros::Motor TempWheel(2, pros::v5::MotorGears::green);
 
 // Distance sensors
 pros::Distance distance_left(DISTANCE_LEFT);
