@@ -1,6 +1,6 @@
 #pragma once
 
-#include "user_config.hpp"
+#include "config.hpp"
 
 #ifdef DEBUG_ENABLED
 struct debug_drivetrain {

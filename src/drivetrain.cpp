@@ -1,7 +1,6 @@
 #include "main.h"
 #include "drivetrain.hpp"
 #include "config.hpp"
-#include "user_config.hpp"
 #include "sensors.hpp"
 #include <numbers>
 
@@ -26,6 +25,11 @@ pros::Motor drivetrain_fr(DRIVETRAIN_FR, DRIVETRAIN_CARTRIDGE_COLOUR());
 pros::Motor drivetrain_bl(DRIVETRAIN_BL, DRIVETRAIN_CARTRIDGE_COLOUR());
 pros::Motor drivetrain_br(DRIVETRAIN_BR, DRIVETRAIN_CARTRIDGE_COLOUR());
 pros::MotorGroup drivetrain_all({DRIVETRAIN_FL, DRIVETRAIN_FR, DRIVETRAIN_BL, DRIVETRAIN_BR}, DRIVETRAIN_CARTRIDGE_COLOUR());
+
+void drivetrain_initialise() {
+    drivetrain_all.set_brake_mode(MOTOR_BRAKE_BRAKE);
+	drivetrain_all.set_encoder_units(MOTOR_ENCODER_DEGREES);
+}
 
 void drivetrain_move(double velocity_x, double velocity_y, double velocity_turn) {
     // calculate drivetrain motor velocity

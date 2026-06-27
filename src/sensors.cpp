@@ -1,7 +1,6 @@
 #include "main.h"
 #include "sensors.hpp"
 #include "config.hpp"
-#include "user_config.hpp"
 
 // Distance sensors
 pros::Distance distance_left(DISTANCE_LEFT);

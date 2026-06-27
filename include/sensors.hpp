@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.hpp"
+
 // Only required for debug code
 #ifdef DEBUG_ENABLED
 // Optical sensor for toggles

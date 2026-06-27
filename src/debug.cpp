@@ -1,9 +1,9 @@
 #include "main.h"
 #include "debug.hpp"
+#include "config.hpp"
 
 #ifdef DEBUG_ENABLED
 
-#include "config.hpp"
 #include "sensors.hpp"
 
 debug_drivetrain drivetrain_debug;

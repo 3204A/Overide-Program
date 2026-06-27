@@ -1,7 +1,7 @@
 #include "main.h"
 #include "config.hpp"
-#include "user_config.hpp"
 #include "drivetrain.hpp"
+#include "scoring.hpp"
 #include "sensors.hpp"
 
 #ifdef DEBUG_ENABLED
@@ -14,33 +14,15 @@ pros::Controller controller_main(CONTROLLER_MASTER);
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
- * All other competition modes are blocked by initialize; it is recommended
+ * All other competition modes are blocked by initialise; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() {
+void initialize() { // It is spelt with a S not a Z, initialise
 	pros::lcd::initialize();
 	pros::lcd::set_text(0, "Starting initialisation...");
 
-	drivetrain_fl.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	drivetrain_fr.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	drivetrain_bl.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	drivetrain_br.set_brake_mode(MOTOR_BRAKE_BRAKE);
-	drivetrain_fl.set_encoder_units(MOTOR_ENCODER_DEGREES);
-	drivetrain_fr.set_encoder_units(MOTOR_ENCODER_DEGREES);
-	drivetrain_bl.set_encoder_units(MOTOR_ENCODER_DEGREES);
-	drivetrain_br.set_encoder_units(MOTOR_ENCODER_DEGREES);
-
-	lift.set_brake_mode_all(MOTOR_BRAKE_HOLD);
-	lift.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
-	lift.tare_position_all();
-
-	TempArm.set_brake_mode_all(MOTOR_BRAKE_HOLD);
-	TempArm.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
-	TempArm.tare_position_all();
-
-	TempClaw.set_brake_mode_all(MOTOR_BRAKE_HOLD);
-	TempClaw.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
-	TempClaw.tare_position_all();
+	drivetrain_initialise();
+	scoring_initialise();
 
 	inertial.reset(true);
 
@@ -141,35 +123,6 @@ void opcontrol() {
 		else {
 			drivetrain_move(velocity_x, velocity_y, velocity_turn);
 		}
-
-		// TEMP
-		if (controller_main.get_digital(DIGITAL_R1)) {
-			TempWheel.move_velocity(-200);
-		}
-		else {
-			TempWheel.move_velocity(0);
-		}
- 
-		if (controller_main.get_digital(DIGITAL_L1)) {
-			TempArm.move_velocity(200);
-		}
-		else if (controller_main.get_digital(DIGITAL_L2)) {
-			TempArm.move_velocity(-30);
-		}
-		else {
-			TempArm.move_velocity(0);
-		}
-		
-		if (controller_main.get_digital(DIGITAL_UP)) {
-			TempClaw.move_velocity(30);
-		}
-		else if (controller_main.get_digital(DIGITAL_DOWN)) {
-			TempClaw.move_velocity(-30);
-		}
-		else {
-			TempClaw.move_velocity(0);
-		}
-		// TEMP
 
 		#ifdef DEBUG_ENABLED
 		controller_debug = {velocity_x, velocity_y, velocity_turn};
