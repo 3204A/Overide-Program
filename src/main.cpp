@@ -8,6 +8,9 @@
 #include "debug.hpp"
 #endif
 
+// Main controller
+pros::Controller controller_main(CONTROLLER_MASTER);
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -30,6 +33,14 @@ void initialize() {
 	lift.set_brake_mode_all(MOTOR_BRAKE_HOLD);
 	lift.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
 	lift.tare_position_all();
+
+	TempArm.set_brake_mode_all(MOTOR_BRAKE_HOLD);
+	TempArm.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
+	TempArm.tare_position_all();
+
+	TempClaw.set_brake_mode_all(MOTOR_BRAKE_HOLD);
+	TempClaw.set_encoder_units_all(MOTOR_ENCODER_DEGREES);
+	TempClaw.tare_position_all();
 
 	inertial.reset(true);
 
@@ -78,7 +89,12 @@ void competition_initialize() {}
  */
 void autonomous() {
 	// Temporary auto code
+	/*
+	TempClaw.move_absolute(50, 30);
+	TempArm.move_absolute(50, 30);
 	drivetrain_move(50, 0, 0, 300);
+	TempClaw.move_absolute(-50, 30);
+	*/
 }
 
 /**
@@ -126,15 +142,35 @@ void opcontrol() {
 			drivetrain_move(velocity_x, velocity_y, velocity_turn);
 		}
 
-		// TEMP: WHEEL TOGGLE
+		// TEMP
 		if (controller_main.get_digital(DIGITAL_R1)) {
-			TempWheel.move_velocity(200);
+			TempWheel.move_velocity(-200);
 		}
 		else {
 			TempWheel.move_velocity(0);
 		}
-		// TEMP: WHEEL TOGGLE
  
+		if (controller_main.get_digital(DIGITAL_L1)) {
+			TempArm.move_velocity(200);
+		}
+		else if (controller_main.get_digital(DIGITAL_L2)) {
+			TempArm.move_velocity(-30);
+		}
+		else {
+			TempArm.move_velocity(0);
+		}
+		
+		if (controller_main.get_digital(DIGITAL_UP)) {
+			TempClaw.move_velocity(30);
+		}
+		else if (controller_main.get_digital(DIGITAL_DOWN)) {
+			TempClaw.move_velocity(-30);
+		}
+		else {
+			TempClaw.move_velocity(0);
+		}
+		// TEMP
+
 		#ifdef DEBUG_ENABLED
 		controller_debug = {velocity_x, velocity_y, velocity_turn};
 		#endif

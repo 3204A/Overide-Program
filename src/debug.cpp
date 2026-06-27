@@ -83,11 +83,11 @@ void debug_tools() {
 }
 
 void debug_display() {
-    int last_start = pros::millis();
+    std::uint32_t last_start = pros::millis();
     int max_cycle = 0;
     
     while(true) {
-        int cycle_time = pros::millis() - last_start;
+        std::uint32_t cycle_time = pros::millis() - last_start;
         last_start = pros::millis();
         if (cycle_time > max_cycle) max_cycle = cycle_time;
         

@@ -1,5 +1,14 @@
 #pragma once
 
+// Only required for debug code
+#ifdef DEBUG_ENABLED
+// Optical sensor for toggles
+extern pros::Optical optical_toggle;
+
+// inertial sensor
+extern pros::Imu inertial;
+#endif
+
 struct distance_processed {
     double left_mm;
     double back_mm;

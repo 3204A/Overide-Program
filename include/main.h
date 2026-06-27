@@ -36,6 +36,9 @@
 
 #include "api.h"
 
+// Main controller
+extern pros::Controller controller_main;
+
 /**
  * You should add more #includes here
  */

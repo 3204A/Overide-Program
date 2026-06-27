@@ -9,6 +9,24 @@
 #include "debug.hpp"
 #endif
 
+// Automaticaly set all drivetrain motors to cartridge
+constexpr pros::v5::MotorGears DRIVETRAIN_CARTRIDGE_COLOUR() {
+    if (DRIVETRAIN_CARTRIDGE_RPM == 100) {
+        return pros::v5::MotorGears::red;
+    }
+    if (DRIVETRAIN_CARTRIDGE_RPM == 600) {
+        return pros::v5::MotorGears::blue;
+    }
+    return pros::v5::MotorGears::green;
+}
+
+// Drivetrain motors
+pros::Motor drivetrain_fl(DRIVETRAIN_FL, DRIVETRAIN_CARTRIDGE_COLOUR());
+pros::Motor drivetrain_fr(DRIVETRAIN_FR, DRIVETRAIN_CARTRIDGE_COLOUR());
+pros::Motor drivetrain_bl(DRIVETRAIN_BL, DRIVETRAIN_CARTRIDGE_COLOUR());
+pros::Motor drivetrain_br(DRIVETRAIN_BR, DRIVETRAIN_CARTRIDGE_COLOUR());
+pros::MotorGroup drivetrain_all({DRIVETRAIN_FL, DRIVETRAIN_FR, DRIVETRAIN_BL, DRIVETRAIN_BR}, DRIVETRAIN_CARTRIDGE_COLOUR());
+
 void drivetrain_move(double velocity_x, double velocity_y, double velocity_turn) {
     // calculate drivetrain motor velocity
     double fl = -velocity_x - velocity_y - velocity_turn;

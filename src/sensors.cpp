@@ -3,6 +3,23 @@
 #include "config.hpp"
 #include "user_config.hpp"
 
+// Distance sensors
+pros::Distance distance_left(DISTANCE_LEFT);
+pros::Distance distance_back(DISTANCE_BACK);
+
+// inertial sensor
+pros::Imu inertial(INERTIAL);
+
+// Rotation sensors for odometry
+pros::Rotation tracking_wheel_horizontal(TRACKING_WHEEL_HORIZONTAL);
+pros::Rotation tracking_wheel_vertical(TRACKING_WHEEL_VERTICAL);
+
+// Optical sensor for toggles
+pros::Optical optical_toggle(OPTICAL_TOGGLE);
+
+// GPS sensor for odometry setup
+pros::GPS gps(GPS_PORT, GPS_X_OFFSET_M, GPS_Y_OFFSET_M);
+
 distance_processed processed_distance;
 inertial_processed processed_inertial;
 tracking_wheel_processed processed_tracking_wheel;
@@ -22,7 +39,7 @@ void sensor_processing() {
 
     double current_distance_back = distance_back.get_distance();
     double current_distance_left = distance_left.get_distance();
-    double current_inertial_rotation = inertial.get_rotation() * ERROR_CORRECTION_INERTIAL; // Cancel out error in inertial readings where 1 full rotation ± 360 degrees
+    double current_inertial_rotation = inertial.get_rotation() * ERROR_CORRECTION_INERTIAL; // Cancel out error in inertial readings where 1 full rotation ≠ 360 degrees
     double current_tracking_wheel_horizontal_rotation = tracking_wheel_horizontal.get_position();
     double current_tracking_wheel_vertical_rotation = tracking_wheel_vertical.get_position();
     double current_gps_x = gps.get_position_x();
